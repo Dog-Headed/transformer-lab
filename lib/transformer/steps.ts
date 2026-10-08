@@ -1,0 +1,14 @@
+export type Step = { id:string; title:string; en:string; description:string; formula:string; insight:string; shape:(n:number)=>string; };
+export const steps:Step[] = [
+{id:'input',title:'输入文本',en:'Input text',description:'一句话，是探索的起点。计算机不能直接处理文字，我们先把它变成一个有顺序的 token 序列。',formula:'text → [t₁, t₂, …, tₙ]',insight:'试试改变句子或词语顺序，观察后面的数值如何变化。',shape:()=> '字符串 → n 个 token'},
+{id:'tokenization',title:'文本分词',en:'Tokenization',description:'将文本拆成更小的单位，并为每个 token 分配编号。编号只是查表索引，不表示词语之间的远近。',formula:'[t₁, …, tₙ] → [id₁, …, idₙ]',insight:'空格分词；无空格中文按字拆分。真实模型常用 BPE 等子词方法。这里的 ID 仅属于当前句子的临时词表。',shape:n=>`[${n}]`},
+{id:'embedding',title:'词嵌入',en:'Embedding',description:'每个 token 从嵌入表中取出一个向量。文字变成数字后，模型就能对它进行计算。',formula:'Eᵢ = EmbeddingTable[idᵢ]',insight:'颜色展示向量中的数值。这里的嵌入由 token 和固定种子生成，尚未学习词义。',shape:n=>`[${n}] → [${n}, 8]`},
+{id:'position',title:'位置编码',en:'Positional encoding',description:'注意力本身不知道词的先后。把位置向量加到词向量上，给每个位置一个独特的坐标。',formula:'X = E + PE\nPE(p,2i) = sin(p / 10000^(2i/8))\nPE(p,2i+1) = cos(p / 10000^(2i/8))',insight:'同一个词在不同位置，嵌入相同，加上位置编码后的表示不同。位置 p 从 0 开始。',shape:n=>`[${n}, 8] + [${n}, 8] → [${n}, 8]`},
+{id:'qkv',title:'Q / K / V 投影',en:'Query · Key · Value',description:'同一份输入经过三组线性投影：Q 表示我要找什么，K 表示我可被怎样匹配，V 表示我能提供什么信息。',formula:'Q = XWQ\nK = XWK\nV = XWV',insight:'每个注意力头都有自己的三组权重。本例每头 4 维，共 2 个头。',shape:n=>`[${n}, 8] × [8, 4] → [${n}, 4]`},
+{id:'scores',title:'注意力分数',en:'Scaled dot-product',description:'用一个 token 的 Q 与所有 token 的 K 做点积，再除以 √dₖ。分数越大，匹配越强。',formula:'S = QKᵀ / √dₖ\ndₖ = 4,  √dₖ = 2',insight:'分数可正可负，还不是概率。Encoder 可以关注前后所有 token。连线表示匹配对象，粗细表示分数的相对大小。',shape:n=>`[${n}, 4] × [4, ${n}] → [${n}, ${n}]`},
+{id:'softmax',title:'注意力权重',en:'Softmax attention',description:'Softmax 把每一行分数变成非负权重，且总和为 1。再用这些权重对 V 加权求和，收集上下文信息。',formula:'Aᵢⱼ = exp(Sᵢⱼ) / Σₖ exp(Sᵢₖ)\nhead = AV',insight:'粗线表示更大的权重。热力图每一行都对应一个查询 token，不是全图总和为 1。',shape:n=>`[${n}, ${n}] × [${n}, 4] → [${n}, 4]`},
+{id:'multihead',title:'多头注意力',en:'Multi-head attention',description:'不同的头用各自的投影并行收集信息。把两个头的结果拼接，再投影回原来的 8 维。',formula:'M = Concat(head₁, head₂)WO',insight:'切换 Head 1 / Head 2，对比不同权重。未训练的头没有预设的语法或语义职责。',shape:n=>`2 × [${n}, 4] → [${n}, 8]`},
+{id:'norm1',title:'残差与归一化',en:'Add & Norm',description:'将注意力输出与原输入相加，保留原始信息。再对每个 token 的特征维度归一化，让数值尺度更稳定。',formula:'H = LayerNorm(X + M)\nLN(z) = (z − μ) / √(σ² + ε)',insight:'采用原论文的 Post-LN 结构。本例 γ = 1、β = 0、ε = 10⁻⁵，省略 dropout。',shape:n=>`[${n}, 8] → [${n}, 8]`},
+{id:'ffn',title:'前馈网络',en:'Feed-forward network',description:'对每个 token 独立使用同一套两层网络：先扩展到 16 维，经过 ReLU，再压回 8 维。',formula:'F = ReLU(HW₁ + b₁)W₂ + b₂',insight:'注意力负责 token 之间的信息交互；FFN 负责每个 token 内部的特征变换。',shape:n=>`[${n}, 8] → [${n}, 16] → [${n}, 8]`},
+{id:'output',title:'输出表示',en:'Output representations',description:'FFN 后再做一次残差连接和归一化，得到这一层的输出。每个位置依然是一个向量，但已经融合了上下文。',formula:'Y = LayerNorm(H + F)',insight:'Encoder 输出的是上下文表示，不是生成的新文字。它可以送入下一层或接上分类等任务头。',shape:n=>`[${n}, 8] → [${n}, 8]`},
+];
