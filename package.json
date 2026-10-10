@@ -1,6 +1,6 @@
 {
-  "name": "transformer-visual-lab",
-  "version": "0.1.0",
+  "name": "transformer-training-lab",
+  "version": "0.2.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -16,6 +16,7 @@
     "check:model": "node --experimental-strip-types scripts/verify-model.mjs",
     "check:generation": "node --experimental-strip-types scripts/verify-generation.mjs",
     "check:training": "node --experimental-strip-types scripts/verify-training.mjs",
+    "check:training-api": "node --experimental-strip-types scripts/verify-training-api.mjs",
     "check:grokking": "node --experimental-strip-types scripts/verify-grokking.mjs",
     "generate:source": "node scripts/generate-journey-source.mjs",
     "check:journey": "node --experimental-strip-types scripts/verify-journey.mjs"
