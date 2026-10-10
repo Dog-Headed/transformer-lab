@@ -1,0 +1,18 @@
+{
+  "dataset": "roneneldan/TinyStories",
+  "authors": [
+    "Ronen Eldan",
+    "Yuanzhi Li"
+  ],
+  "revision": "f54c09fd23315a6f9c86f9dc80f725de7d8f9c64",
+  "source_url": "https://huggingface.co/datasets/roneneldan/TinyStories/resolve/f54c09fd23315a6f9c86f9dc80f725de7d8f9c64/TinyStoriesV2-GPT4-train.txt",
+  "source_file": "TinyStoriesV2-GPT4-train.txt",
+  "downloaded_on": "2026-10-10",
+  "range": "bytes 0-1572863/2227753162",
+  "stories": 1901,
+  "characters": 1546303,
+  "sha256": "283f688aefca37579babe78ddb9c73ed19f669cf0ce9e6810e3f17a8d9e5dc7d",
+  "license": "CDLA-Sharing-1.0",
+  "license_url": "https://cdla.dev/sharing-1-0/",
+  "changes": "First 1.5 MiB; discard incomplete last story; strip outer story whitespace; replace end-of-text separators with blank lines; UTF-8 LF. Synthetic GPT-4 stories, not human-authored text."
+}

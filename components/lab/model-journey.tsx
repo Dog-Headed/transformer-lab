@@ -103,6 +103,6 @@ export default function ModelJourney(){
         {experiment&&[6,7,8,10,11].includes(stage)&&<JourneyDiagnostics experiment={experiment} onGo={go} onRestore={restore} full={stage===7}/>}
         {!experiment&&stage>=6&&<section className="journey-card"><p>先在「搭建模型」执行初始化，再开始训练。</p><button onClick={()=>go(5)}>返回搭建模型</button></section>}
       </div></div>
-      <div className="journey-navigation"><button disabled={stage===0} onClick={()=>go(stage-1)}><ChevronLeft size={15}/>上一步</button><span>{String(stage+1).padStart(2,'0')} / 12 · {current.en}</span>{stage<11?<button className="primary" disabled={!nextAllowed} onClick={next}>下一步：{stages[stage+1].title}<ChevronRight size={15}/></button>:<button onClick={rebuild}><RotateCcw size={15}/>保留结果，再造一个模型</button>}</div><footer className="journey-footer"><FlaskConical size={16}/><span>真实微型模型训练与 SFT · 偏好阶段为有限候选教学实验 · 所有训练在浏览器本地计算</span><a href="/training">回到训练原理实验室</a></footer>
+      <div className="journey-navigation"><button disabled={stage===0} onClick={()=>go(stage-1)}><ChevronLeft size={15}/>上一步</button><span>{String(stage+1).padStart(2,'0')} / 12 · {current.en}</span>{stage<11?<button className="primary" disabled={!nextAllowed} onClick={next}>下一步：{stages[stage+1].title}<ChevronRight size={15}/></button>:<button onClick={rebuild}><RotateCcw size={15}/>保留结果，再造一个模型</button>}</div><footer className="journey-footer"><FlaskConical size={16}/><span>真实微型模型训练与 SFT · 偏好阶段为有限候选教学实验 · 所有训练在浏览器本地计算</span><a href="/training/guide">回到训练原理实验室</a></footer>
     </main></div>;
 }

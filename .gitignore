@@ -45,3 +45,15 @@ next-env.d.ts
 /outputs/
 /work/
 *.tsbuildinfo
+
+# Local PyTorch environment and trained artifacts
+/.venv/
+/.venv-gpu/
+/backend/runs/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.pt
+*.tmp
+# Temporary installer lock; package-lock.json remains the canonical lock.
+/pnpm-lock.yaml
