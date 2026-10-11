@@ -99,8 +99,10 @@ Python 服务独立运行。单 worker 在后台训练，API 读取进度无需�
 新的独立 Python 虚拟环境均在此目录；模型与训练实现沿用原项目。
 网页继续使用 React / TypeScript，真实训练、推理和服务均由 Python 执行。
 
-- 双击 `start.cmd`：启动 Python 后端与网页，等待可访问后打开训练页面。
-- 双击 `stop.cmd`：停止该目录启动的服务；已保存的 checkpoint 保留。
+- 在项目根目录运行 `python app.py`：同时启动 Python 后端与网页，等待可访问后打开训练页面。也可在 IDE 中直接运行根目录的 `app.py`。
+- 运行 `python app.py --stop` 停止该目录启动的服务；已保存的 checkpoint 保留。
+- 可选 `python app.py --no-browser`：启动服务但不自动打开浏览器。
+- `app.py` 使用标准库，不要求先激活虚拟环境；后端自动使用本项目的 `.venv`。原 `start.cmd` / `stop.cmd` 也继续可用。
 - `setup.cmd`：在环境缺失或重新克隆项目时安装依赖，默认 CUDA；CPU 可用 `setup.cmd -Device cpu`。
 - 启动脚本默认后台运行服务，日志位于 `.runtime/`，不需要手动维持两个窗口。
 - 环境、运行日志、前端依赖和 checkpoint 不提交到 Git；当前目录含既有存档的本地副本。
@@ -110,6 +112,8 @@ Python 项目使用 `pyproject.toml` 管理包与依赖，安装后提供 `trans
 
 ```powershell
 cd D:\TransformerLab
+python app.py
+# 停止服务：python app.py --stop
 .\.venv\Scripts\python.exe -m backend doctor
 .\.venv\Scripts\python.exe -m backend train --device cuda --steps 200 --storage backend/runs --output experiments/my-run.json
 .\.venv\Scripts\python.exe -m backend generate --checkpoint e2047790b3684be89ceed464aaeaebe8 --prompt "User: Who created you?`nAssistant:" --top-k 1 --temperature 0.5 --stop-after-sentence
