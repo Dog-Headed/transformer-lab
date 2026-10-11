@@ -1,0 +1,3 @@
+# Keep corpus bytes reproducible when checking out on Windows.
+backend/data/* text eol=lf
+*.pt binary

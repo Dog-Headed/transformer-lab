@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68,<81"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "transformer-training-lab"
+version = "0.2.1"
+description = "A PyTorch Transformer training and visualization laboratory"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "torch==2.13.0",
+    "numpy==1.26.4",
+    "fastapi==0.135.2",
+    "starlette==0.52.1",
+    "pydantic==2.13.4",
+    "uvicorn==0.41.0",
+    "jieba==0.42.1",
+    "setuptools==80.9.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest==9.0.2", "httpx==0.28.1"]
+
+[project.scripts]
+transformer-lab = "backend.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["backend"]
+
+[tool.setuptools.package-data]
+backend = ["data/*.txt", "data/*.json", "data/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["backend/tests"]
+norecursedirs = [".venv", ".tools", "node_modules", ".git", "backend/runs"]

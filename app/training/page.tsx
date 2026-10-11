@@ -1,4 +1,4 @@
-import TrainingLab from '@/components/lab/training-lab';
-import './training.css';
-export const metadata={title:'模型训练实验室 · Transformer Lab',description:'在浏览器训练微型 Transformer，观察实际注意力、损失、梯度、参数更新与同一套权重的续写，再了解 SFT 和人类偏好训练。'};
-export default function TrainingPage(){return <TrainingLab/>;}
+import PytorchTrainingLab from '@/components/lab/pytorch-training-lab';
+import './pytorch.css';
+export const metadata={title:'Transformer Training Lab｜Transformer 训练与可视化实验平台',description:'真实 PyTorch 字符级 Transformer 训练、留出验证、注意力可视化、checkpoint 保存恢复与模型续写。'};
+export default function TrainingPage(){return <PytorchTrainingLab/>;}
