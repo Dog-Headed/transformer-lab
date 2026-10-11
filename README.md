@@ -93,7 +93,33 @@ Python 服务独立运行。单 worker 在后台训练，API 读取进度无需�
 
 核心实现：`backend/model.py`、`backend/data.py`、`backend/training.py`。没有 Trainer 封装或模拟训练曲线。
 
-## 本地运行
+## Windows 固定项目目录与 Python 命令行
+
+本机项目已迁到 `D:\TransformerLab`。源码、数据集、9 份既有 checkpoint 和
+新的独立 Python 虚拟环境均在此目录；模型与训练实现沿用原项目。
+网页继续使用 React / TypeScript，真实训练、推理和服务均由 Python 执行。
+
+- 双击 `start.cmd`：启动 Python 后端与网页，等待可访问后打开训练页面。
+- 双击 `stop.cmd`：停止该目录启动的服务；已保存的 checkpoint 保留。
+- `setup.cmd`：在环境缺失或重新克隆项目时安装依赖，默认 CUDA；CPU 可用 `setup.cmd -Device cpu`。
+- 启动脚本默认后台运行服务，日志位于 `.runtime/`，不需要手动维持两个窗口。
+- 环境、运行日志、前端依赖和 checkpoint 不提交到 Git；当前目录含既有存档的本地副本。
+
+Python 项目使用 `pyproject.toml` 管理包与依赖，安装后提供 `transformer-lab` 命令；
+无需激活环境也可以使用以下 PowerShell 命令：
+
+```powershell
+cd D:\TransformerLab
+.\.venv\Scripts\python.exe -m backend doctor
+.\.venv\Scripts\python.exe -m backend train --device cuda --steps 200 --storage backend/runs --output experiments/my-run.json
+.\.venv\Scripts\python.exe -m backend generate --checkpoint e2047790b3684be89ceed464aaeaebe8 --prompt "User: Who created you?`nAssistant:" --top-k 1 --temperature 0.5 --stop-after-sentence
+.\.venv\Scripts\python.exe -m pytest -q
+```
+
+`backend.benchmark` 的原命令继续可用；CLI 和网页复用同一训练与推理实现。
+完整的本机说明见 [本地运行说明.md](本地运行说明.md)。
+
+## 其他电脑的本地运行
 
 需要 Python 3.12（实测版本）、Node.js 22.13+（推荐 24）和 npm。以下命令在仓库根目录执行。
 

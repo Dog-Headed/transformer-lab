@@ -57,3 +57,10 @@ __pycache__/
 *.tmp
 # Temporary installer lock; package-lock.json remains the canonical lock.
 /pnpm-lock.yaml
+
+# Machine-local runtimes, service logs, and Python packaging outputs
+/.tools/
+/.runtime/
+/*.egg-info/
+/build/
+/experiments/local-run.json

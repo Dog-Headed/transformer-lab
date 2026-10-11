@@ -13,8 +13,7 @@ from .config import GenerateRequest, TrainConfig, TrainRequest
 from .training import TrainingManager
 
 
-def main():
-    parser = argparse.ArgumentParser()
+def configure_parser(parser):
     parser.add_argument("--steps", type=int, default=200)
     parser.add_argument("--device", choices=["cpu", "cuda", "auto"], default="cpu")
     parser.add_argument("--size", choices=["tiny", "medium"], default="tiny")
@@ -24,7 +23,10 @@ def main():
     parser.add_argument("--eval-interval", type=int, default=20)
     parser.add_argument("--storage", type=Path, help="Keep real checkpoints in this directory, e.g. backend/runs")
     parser.add_argument("--output", type=Path, default=Path("experiments/cpu-baseline.json"))
-    args = parser.parse_args()
+    return parser
+
+
+def run(args):
     config = TrainConfig(max_steps=args.steps, device=args.device, tokenizer=args.tokenizer, dataset=args.dataset,
                          learning_rate=args.learning_rate, eval_interval=args.eval_interval,
                          **({"layers": 4, "hidden_size": 128, "sequence_length": 64} if args.size == "medium" else {}))
@@ -77,6 +79,10 @@ def main():
             print(json.dumps({k: result[k] for k in ("parameters", "steps", "training_seconds", "initial", "final")}, indent=2))
         finally:
             manager.close()
+
+
+def main(argv=None):
+    run(configure_parser(argparse.ArgumentParser()).parse_args(argv))
 
 
 if __name__ == "__main__":
